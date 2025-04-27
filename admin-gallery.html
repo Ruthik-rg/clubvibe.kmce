@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manage Gallery - ClubVibe</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <h1>Manage Gallery</h1>
+
+  <section>
+    <input type="file" id="mediaInput" multiple accept="image/*,video/*">
+    <input type="text" id="caption" placeholder="Caption for uploads">
+    <input type="text" id="clubTag" placeholder="Tag club name (optional)">
+    <button onclick="uploadSelected()">Upload Selected</button>
+  </section>
+
+  <section>
+    <h2>Uploaded Media</h2>
+    <div id="galleryItems" class="gallery-container"></div>
+    <button onclick="deleteSelected()">Delete Selected</button>
+  </section>
+
+  <nav class="navbar">
+    <a href="admin.html" class="nav-link">Dashboard</a>
+    <a href="admin-gallery.html" class="nav-link active">Manage Gallery</a>
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="login.html" class="nav-link">Logout</a>
+  </nav>
+
+  <script type="module" src="js/admin-gallery.js"></script>
+
+</body>
+</html>

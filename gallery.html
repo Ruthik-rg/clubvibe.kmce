@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClubVibe Gallery</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <h1>Gallery</h1>
+
+  <input type="text" id="searchInput" placeholder="Search by caption..." oninput="searchGallery()">
+
+  <div id="galleryItems" class="gallery-container"></div>
+
+  <!-- Lightbox -->
+  <div id="lightboxOverlay" style="display:none;" onclick="closeLightbox()">
+    <div id="lightboxContent"></div>
+  </div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="gallery.html" class="nav-link active">Gallery</a>
+    <a href="feedback.html" class="nav-link">Feedback</a>
+    <a href="myclubs.html" class="nav-link">My Clubs</a>
+    <a href="login.html" class="nav-link">Logout</a>
+  </nav>
+
+  <script type="module" src="js/gallery.js"></script>
+
+</body>
+</html>

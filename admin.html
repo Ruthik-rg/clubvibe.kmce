@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClubVibe Admin Panel</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <h1>Admin Panel - Club Management</h1>
+
+  <section>
+    <h2>All Clubs</h2>
+    <div id="clubTable"></div>
+  </section>
+
+  <section>
+    <h2>Make Announcement</h2>
+    <select id="announceClub">
+      <option value="">Select Club</option>
+    </select>
+    <textarea id="announcementText" placeholder="Enter announcement..."></textarea>
+    <input type="datetime-local" id="announcementDate" />
+    <button onclick="postAnnouncement()">Post Announcement</button>
+  </section>
+
+  <section>
+    <h2>Feedbacks from Users</h2>
+    <div id="feedbackList"></div>
+  </section>
+
+  <button id="logoutBtn">Logout</button>
+
+  <nav class="navbar">
+    <a href="admin.html" class="nav-link active">Dashboard</a>
+    <a href="admin-gallery.html" class="nav-link">Manage Gallery</a>
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="login.html" class="nav-link">Logout</a>
+  </nav>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
