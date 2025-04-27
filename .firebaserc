@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "ruthik.kmce": "clubvibe-kmce",
+    "default": "clubvibe-kmce"
+  },
+  "targets": {},
+  "etags": {}
+}

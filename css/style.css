@@ -188,3 +188,11 @@ section {
   width: 100%;
   border-radius: 20px;
 }
+/* Footer Style */
+.footer {
+  margin: 40px 0 100px 0;
+  text-align: center;
+  font-size: 0.9em;
+  color: #00f5d4;
+  opacity: 0.8;
+}

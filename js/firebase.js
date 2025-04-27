@@ -8,13 +8,15 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-s
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAmLj1G96Gn82BqFA_sghHKaTay2Qcvdbk",
+  authDomain: "clubvibe-kmce.firebaseapp.com",
+  projectId: "clubvibe-kmce",
+  storageBucket: "clubvibe-kmce.firebasestorage.app",
+  messagingSenderId: "856209245389",
+  appId: "1:856209245389:web:0cd89fe0562c73597c5584",
+  measurementId: "G-MQT9WPZ1QX"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
