@@ -1,133 +1,103 @@
- // js/user.js
-
+// user.js
 import { db, auth } from './firebase.js';
-import { collection, doc, getDoc, getDocs, onSnapshot, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+import {
+  collection, onSnapshot, doc, getDoc, updateDoc, arrayUnion, arrayRemove
+} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 import { logoutUser, checkUser } from './auth.js';
 
 let currentUser;
 
-checkUser(async user => {
-  if (!user) {
+// Check login status
+checkUser(async (user, userData) => {
+  if (!user || userData.role !== 'user') {
+    alert("Access denied. Only Users allowed!");
     window.location.href = "login.html";
-    return;
   }
-  currentUser = user;
-  loadPosters();
-  loadClubs();
-  loadMyClubs();
+  else { // user and userData.role are defined here
+    currentUser = user;
+    loadClubs();
+    loadMyClubs();
+    loadPosters();
+  }
 });
 
-// Load Carousel Posters
-// Load Posters Carousel
-function loadPosters() {
-  const carouselInner = document.getElementById("carouselInner");
-
-  onSnapshot(collection(db, "posters"), snapshot => {
-    carouselInner.innerHTML = '';
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      carouselInner.innerHTML += `
-        <div class="carousel-item">
-          <img src="${data.url}" class="poster" alt="poster" />
-        </div>
-      `;
-    });
-
-    startCarouselAutoScroll(); // Start moving after loading
-  });
-}
-
-// Auto Move Carousel
-function startCarouselAutoScroll() {
-  const container = document.querySelector(".carousel-inner");
-  let scrollAmount = 0;
-
-  setInterval(() => {
-    scrollAmount += 1;
-    if (scrollAmount >= container.scrollWidth - container.clientWidth) {
-      scrollAmount = 0; // Reset to start
-    }
-    container.scrollTo({
-      left: scrollAmount,
-      behavior: "smooth"
-    });
-  }, 30); // Adjust speed by changing milliseconds
-}
-
-// Load Clubs to Join
+// Load available clubs
 function loadClubs() {
-  const container = document.getElementById("clubsContainer");
+  const list = document.getElementById("clubList");
   onSnapshot(collection(db, "clubs"), snapshot => {
-    container.innerHTML = '';
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      container.innerHTML += `
+    list.innerHTML = "";
+    snapshot.forEach(docSnap => {
+      const club = docSnap.data();
+      const id = docSnap.id;
+
+      list.innerHTML += `
         <div class="club-card">
-          <h3>${data.name}</h3>
-          <p>${data.desc}</p>
-          <button onclick="joinClub('${doc.id}')">Join</button>
+          <h4>${club.name}</h4>
+          <p>${club.desc}</p>
+          <button onclick="joinClub('${id}')">Join</button>
         </div>
       `;
     });
   });
 }
 
-// Join a Club
+// Join a club
 window.joinClub = async function (clubId) {
   const userRef = doc(db, "users", currentUser.uid);
   await updateDoc(userRef, {
     joinedClubs: arrayUnion(clubId)
   });
-  alert("Successfully joined club!");
+  alert("Joined club!");
   loadMyClubs();
 }
 
-// Load My Clubs and Announcements
+// Load user's joined clubs
 function loadMyClubs() {
-  const section = document.getElementById("joinedClubs");
+  const list = document.getElementById("joinedClubs");
   getDoc(doc(db, "users", currentUser.uid)).then(docSnap => {
     const joined = docSnap.data().joinedClubs || [];
-    section.innerHTML = joined.length
-      ? joined.map(id => `<div>${id}</div>`).join('')
+    list.innerHTML = joined.length
+      ? joined.map(id => `<div>${id} <button onclick="leaveClub('${id}')">Leave</button></div>`).join('')
       : "<p>No clubs joined yet.</p>";
-
-    loadAnnouncements(joined);
   });
 }
 
-// Load Club Announcements
-function loadAnnouncements(clubIds) {
-  const list = document.getElementById("announcementList");
-  list.innerHTML = '';
+// Leave a club
+window.leaveClub = async function (clubId) {
+  const userRef = doc(db, "users", currentUser.uid);
+  await updateDoc(userRef, {
+    joinedClubs: arrayRemove(clubId)
+  });
+  alert("Left club!");
+  loadMyClubs();
+}
 
-  clubIds.forEach(async (clubId) => {
-    const announcementsRef = collection(db, `announcements/${clubId}/messages`);
-    const snapshot = await getDocs(announcementsRef);
+// Load posters for carousel
+// Load posters for carousel
+function loadPosters() {
+  const carousel = document.getElementById("posterCarousel");
+  onSnapshot(collection(db, "posters"), snapshot => {
+    carousel.innerHTML = "";
+    let posters = [];
 
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      list.innerHTML += `
-        <div class="announcement-card">
-          <strong>${clubId}</strong>
-          <p>${data.message}</p>
-          <small>${new Date(data.timestamp).toLocaleString()}</small>
-        </div>
-      `;
+    snapshot.forEach(docSnap => {
+      const poster = docSnap.data();
+      posters.push(`<img src="${poster.url}" class="poster-img" style="width: 100%; height: auto; border-radius: 12px;">`);
     });
+
+    carousel.innerHTML = posters.join('');
+
+    // Auto-slide carousel
+    let current = 0;
+    setInterval(() => {
+      const imgs = carousel.querySelectorAll('img');
+      imgs.forEach((img, idx) => {
+        img.style.display = (idx === current) ? 'block' : 'none';
+      });
+      current = (current + 1) % imgs.length;
+    }, 3000); // Change poster every 3 seconds
   });
 }
 
-// Tab Switch
-window.switchTab = function (tab) {
-  if (tab === "myClubs") {
-    document.getElementById("clubList").style.display = "none";
-    document.getElementById("myClubs").style.display = "block";
-  } else {
-    document.getElementById("clubList").style.display = "block";
-    document.getElementById("myClubs").style.display = "none";
-  }
-};
-
-// Logout
-document.getElementById("logoutBtn").addEventListener("click", logoutUser);
+// Expose logout
+window.logoutUser = logoutUser;

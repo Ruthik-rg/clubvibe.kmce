@@ -2,43 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ClubVibe Admin Panel</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <h1>Admin Panel - Club Management</h1>
+  <h1>ClubVibe Admin Dashboard</h1>
 
-  <section>
-    <h2>All Clubs</h2>
-    <div id="clubTable"></div>
-  </section>
+  <!-- Top Control Panel -->
+  <div style="margin-bottom: 20px;">
+    <button onclick="scrollToSection('clubTable')">🏛️ Manage Clubs</button>
+    <button onclick="scrollToSection('posterSection')">🖼️ Manage Posters</button>
+    <button onclick="scrollToSection('gallerySection')">🎞️ Manage Gallery</button>
+    <button onclick="scrollToSection('feedbackSection')">✉️ View Feedbacks</button>
+    <button onclick="logoutUser()">🚪 Logout</button>
+  </div>
 
-  <section>
-    <h2>Make Announcement</h2>
-    <select id="announceClub">
-      <option value="">Select Club</option>
-    </select>
-    <textarea id="announcementText" placeholder="Enter announcement..."></textarea>
-    <input type="datetime-local" id="announcementDate" />
-    <button onclick="postAnnouncement()">Post Announcement</button>
-  </section>
+  <hr>
 
-  <section>
-    <h2>Feedbacks from Users</h2>
-    <div id="feedbackList"></div>
-  </section>
+  <!-- Club Management -->
+  <h2 id="clubSection">Manage Clubs</h2>
+  <button onclick="addClub()">➕ Create Club</button>
+  <div id="clubTable"></div>
 
-  <button id="logoutBtn">Logout</button>
+  <hr>
 
-  <nav class="navbar">
-    <a href="admin.html" class="nav-link active">Dashboard</a>
-    <a href="admin-gallery.html" class="nav-link">Manage Gallery</a>
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="login.html" class="nav-link">Logout</a>
-  </nav>
+  <!-- Poster Management -->
+  <h2 id="posterSectionTitle">Manage Posters</h2>
+  <input type="file" id="posterInput" accept="image/*">
+  <button onclick="addPoster()">➕ Upload Poster</button>
+  <div id="posterSection"></div>
 
+  <hr>
+
+  <!-- Gallery Management -->
+  <h2 id="gallerySectionTitle">Manage Gallery</h2>
+  <div id="gallerySection"></div>
+
+  <hr>
+
+  <!-- Feedback Viewer -->
+  <h2 id="feedbackSectionTitle">User Feedbacks</h2>
+  <div id="feedbackSection"></div>
+
+  <!-- Script linking -->
   <script type="module" src="js/admin.js"></script>
+
+  <script>
+    // Scroll to specific section
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+
 </body>
 </html>

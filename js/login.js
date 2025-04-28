@@ -1,6 +1,6 @@
 // js/login.js
 
-import { auth, db } from './firebase.js';
+import { auth, db } from './js/firebase.js';
 import { signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
 

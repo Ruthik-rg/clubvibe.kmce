@@ -14,6 +14,10 @@ body {
 }
 
 /* Headers */
+h1 {
+  color: #ff0000;
+  margin-top: 20px;
+}
 h1, h2, h3, h4 {
   color: #00f5d4;
   margin-top: 20px;

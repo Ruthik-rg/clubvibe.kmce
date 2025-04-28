@@ -1,28 +1,32 @@
 // js/auth.js
+// auth.js
+import { db, auth } from './firebase.js';
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-import { auth, db } from './firebase.js';
-import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
-import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
-
-// Check current logged-in user
-export function checkUser(callback) {
-  onAuthStateChanged(auth, async user => {
+export const checkUser = (callback) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      const userDocRef = doc(db, "users", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
-      
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data();
-        callback({ ...user, role: userData.role || "user" });
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/auth.user
+      const uid = user.uid;
+      console.log("User signed in. User id:" + uid);
+      const userRef = doc(db, "users", uid); // Assuming you have a 'users' collection
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        console.log("Document data:", userSnap.data());
+        callback(user, userSnap.data()); // Pass the user data to the callback
       } else {
-        console.error("No user document found!");
-        callback(null);
+        console.log("No such document!");
+        callback(user, {}); // User document does not exist. Pass an empty object.
       }
     } else {
-      callback(null);
+      // User is signed out
+      console.log("User not logged in.");
+      callback(null, {}); //No user logged in. Pass an empty object.
     }
   });
-}
+};
 
 // Logout user
 export function logoutUser() {
